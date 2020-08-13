@@ -1,17 +1,15 @@
 from annoying.decorators import ajax_request
-from django.views.generic import TemplateView, ListView, DeleteView
-from django.views.generic.edit import CreateView, UpdateView, DeleteView,UpdateView,DeleteView
-from Insta.models import Like, Post, InstaUser, UserConnection
 from Insta.forms import CustomUserCreationForm
-from django.urls import reverse, reverse_lazy
-
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse_lazy
+from django.views.generic import DetailView, ListView, TemplateView
+from django.views.generic.edit import CreateView, DeleteView, UpdateView
+from Insta.models import UserConnection
+from Insta.models import InstaUser,Post,UserConnection, Like
 
-from django.contrib.auth.forms import UserCreationForm
-# Create your views here.
 
 class HelloWorld(TemplateView):
-    template_name = 'home.html'
+    template_name = 'test.html'
 
 class PostsView(ListView):
     model = Post
@@ -24,24 +22,24 @@ class PostsView(ListView):
             following.add(conn.following)
         return Post.objects.filter(author__in=following)
 
-class PostDetailView(DeleteView):
+class PostDetailView(DetailView):
     model = Post
-    template_name = 'post_detail.html' 
+    template_name = 'post_detail.html'
 
-class UserDetailView(DeleteView):
+class UserDetailView(DetailView):
     model = InstaUser
-    template_name = 'user_detail.html' 
+    template_name = 'user_detail.html'
 
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
     template_name = 'post_create.html'
     fields = '__all__'
     login_url = 'login'
-    
+
 class PostUpdateView(UpdateView):
-     model = Post
-     template_name = 'post_update.html'
-     fields = ['title']
+    model = Post
+    template_name = 'post_update.html'
+    fields = ['title']
 
 class PostDeleteView(DeleteView):
     model = Post
